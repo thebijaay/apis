@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>thebijay API Hub | Discover. Integrate. Build.</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">thebijay API Hub</div>
+            <div class="logo"><a href="index.html">thebijay API Hub</a></div>
+            <div class="nav-search-container">
+                <i class="fa fa-search nav-search-icon"></i>
+                <input type="text" id="navSearchInput" placeholder="Global API search..." onkeypress="if(event.key === 'Enter') window.location.href = 'marketplace.html?q=' + this.value">
+            </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="apis.html">Marketplace</a></li>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="marketplace.html">APIs</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
             </ul>
-            <a href="apis.html" class="btn btn-primary">Start Building</a>
+            <a href="marketplace.html" class="btn btn-primary">Start Building</a>
         </nav>
     </header>
 
@@ -24,81 +30,53 @@
             <div class="container">
                 <h1>Discover. Integrate. Build.</h1>
                 <p>Hassle-Free API Marketplace for developers and businesses.</p>
-                <div class="hero-search">
-                    <input type="text" id="heroSearchInput" placeholder="Search for any API...">
-                    <button onclick="window.location.href='apis.html?q=' + document.getElementById('heroSearchInput').value" class="btn btn-secondary">Search</button>
+                <div class="hero-search" style="max-width: 600px; margin: 0 auto; display: flex; gap: 10px;">
+                    <input type="text" id="heroSearchInput" placeholder="Search for any API..." style="flex-grow: 1; padding: 15px; border-radius: 5px; border: none; font-size: 1rem;">
+                    <button onclick="window.location.href='marketplace.html?q=' + document.getElementById('heroSearchInput').value" class="btn btn-secondary">Search</button>
                 </div>
             </div>
         </section>
 
-        <section class="featured container">
-            <h2>Featured APIs</h2>
-            <div id="featuredContainer" class="api-grid">
-                <!-- Featured APIs will be loaded here -->
+        <section class="container" style="padding: 60px 0;">
+            <div class="text-center" style="margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem;">Featured APIs</h2>
+                <p style="color: var(--text-muted);">Hand-picked top-performing APIs for your next project.</p>
             </div>
-            <div class="text-center">
-                <a href="apis.html" class="btn btn-outline">Browse All APIs</a>
-            </div>
-        </section>
-
-        <section class="stats container">
-            <div class="stat-item">
-                <span class="stat-number">445k+</span>
-                <span class="stat-label">Developers</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">100+</span>
-                <span class="stat-label">APIs in the Hub</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">30m+</span>
-                <span class="stat-label">API calls per month</span>
+            <div id="featuredGrid" class="api-grid"></div>
+            <div class="text-center" style="margin-top: 40px;">
+                <a href="marketplace.html" class="btn btn-outline" style="padding: 15px 30px;">Explore All 100+ APIs</a>
             </div>
         </section>
 
-        <section class="use-cases container">
-            <h2>Discover Powerful Use Cases</h2>
-            <div class="use-case-grid">
-                <div class="use-case-card">
-                    <div class="icon">🎯</div>
-                    <h3>Content Personalization</h3>
-                    <p>Use geolocation to customize content and product recommendations based on user location.</p>
+        <section class="stats" style="background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <div class="container" style="display: flex; justify-content: space-around; padding: 60px 0; text-align: center;">
+                <div class="stat-item">
+                    <span class="stat-number" style="font-size: 3rem; font-weight: 800; color: var(--primary);">445k+</span>
+                    <span class="stat-label">Developers</span>
                 </div>
-                <div class="use-case-card">
-                    <div class="icon">🛡️</div>
-                    <h3>Fraud Prevention</h3>
-                    <p>Bolster security by monitoring activity from unauthorized sources in real-time.</p>
+                <div class="stat-item">
+                    <span class="stat-number" style="font-size: 3rem; font-weight: 800; color: var(--primary);">100+</span>
+                    <span class="stat-label">APIs in the Hub</span>
                 </div>
-                <div class="use-case-card">
-                    <div class="icon">📢</div>
-                    <h3>Localized Advertising</h3>
-                    <p>Maximize potential of ad campaigns by targeting users where they reside.</p>
+                <div class="stat-item">
+                    <span class="stat-number" style="font-size: 3rem; font-weight: 800; color: var(--primary);">30m+</span>
+                    <span class="stat-label">API calls per month</span>
                 </div>
+            </div>
+        </section>
+
+        <section class="container" style="padding: 100px 0;">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2>Grouping APIs Based on Business Needs</h2>
+            </div>
+            <div class="api-grid" id="categoryGrid">
+                <!-- Dynamic categories -->
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">thebijay API Hub</div>
-                <div class="footer-links">
-                    <div>
-                        <h4>General</h4>
-                        <ul>
-                            <li><a href="apis.html">Marketplace</a></li>
-                            <li><a href="contact.html">About</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Support</h4>
-                        <ul>
-                            <li><a href="contact.html">Contact</a></li>
-                            <li><a href="#">Documentation</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <div class="footer-bottom">
                 &copy; 2026 thebijay API Hub. All rights reserved.
             </div>
@@ -108,14 +86,24 @@
     <script src="data.js"></script>
     <script src="script.js"></script>
     <script>
-        // Load featured APIs on homepage
-        const featuredContainer = document.getElementById('featuredContainer');
-        if (featuredContainer) {
-            apiData.slice(0, 3).forEach(api => {
-                const card = createApiCard(api);
-                featuredContainer.appendChild(card);
-            });
-        }
+        const featuredGrid = document.getElementById('featuredGrid');
+        apiData.slice(0, 3).forEach(api => {
+            featuredGrid.appendChild(createAdvancedApiCard(api));
+        });
+
+        const categoryGrid = document.getElementById('categoryGrid');
+        categories.slice(1, 7).forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'api-card text-center';
+            card.style.padding = '40px';
+            card.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 20px;">📁</div>
+                <h3>${cat}</h3>
+                <p>${Math.floor(Math.random() * 50) + 10} APIs</p>
+                <a href="marketplace.html?cat=${cat}" class="btn btn-outline btn-sm">Browse</a>
+            `;
+            categoryGrid.appendChild(card);
+        });
     </script>
 </body>
 </html>
