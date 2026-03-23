@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Marketplace | thebijay API Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">thebijay API Hub</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="apis.html">Marketplace</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="apis.html" class="btn btn-primary">Start Building</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="marketplace-hero">
+            <h1>API Marketplace</h1>
+            <p>Explore our curated list of high-quality APIs.</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for any API...">
+                <button class="btn btn-secondary">Search</button>
+            </div>
+        </section>
+
+        <section class="marketplace-content">
+            <aside class="sidebar">
+                <h3>Categories</h3>
+                <ul id="categoryList">
+                    <!-- Categories will be loaded here -->
+                </ul>
+            </aside>
+            <div class="api-grid-container">
+                <div id="apiList" class="api-grid">
+                    <!-- APIs will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 thebijay API Hub. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Load categories in sidebar
+        const categoryList = document.getElementById('categoryList');
+        if (categoryList) {
+            categories.forEach(cat => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = cat;
+                a.className = cat === 'All' ? 'active' : '';
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('#categoryList a').forEach(el => el.classList.remove('active'));
+                    a.classList.add('active');
+                    filterApis(cat);
+                };
+                li.appendChild(a);
+                categoryList.appendChild(li);
+            });
+        }
+
+        // Initialize API list
+        const apiList = document.getElementById('apiList');
+        function displayApis(list) {
+            apiList.innerHTML = '';
+            list.forEach(api => {
+                const card = createApiCard(api);
+                apiList.appendChild(card);
+            });
+        }
+
+        function filterApis(category) {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = apiData.filter(api => {
+                const matchesCategory = (category === 'All' || api.category === category);
+                const matchesSearch = (api.name.toLowerCase().includes(query) || api.description.toLowerCase().includes(query));
+                return matchesCategory && matchesSearch;
+            });
+            displayApis(filtered);
+        }
+
+        document.getElementById('searchInput').oninput = () => {
+            const activeCat = document.querySelector('#categoryList a.active').textContent;
+            filterApis(activeCat);
+        };
+
+        // Check for search query in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get('q');
+        if (q) {
+            document.getElementById('searchInput').value = q;
+            filterApis('All');
+        } else {
+            displayApis(apiData);
+        }
+    </script>
+</body>
+</html>
