@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Marketplace | thebijay API Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="marketplace-page">
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="index.html">thebijay API Hub</a></div>
+            <div class="nav-search-container">
+                <i class="fa fa-search nav-search-icon"></i>
+                <input type="text" id="navSearchInput" placeholder="Global API search..." oninput="handleNavSearch(this.value)">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html" class="active">APIs</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+            <a href="marketplace.html" class="btn btn-primary">Start Building</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="marketplace-header">
+            <h1>API Marketplace</h1>
+            <p>Discover, explore, and integrate high-quality APIs in minutes.</p>
+        </section>
+
+        <section class="marketplace-layout">
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <h3>Categories</h3>
+                    <ul id="categoryFilter"></ul>
+                </div>
+                <div class="filter-group">
+                    <h3>Status</h3>
+                    <ul id="statusFilter"></ul>
+                </div>
+                <div class="filter-group">
+                    <h3>Sort By</h3>
+                    <select id="sortSelect" onchange="handleFilterChange()">
+                        <option value="Popular">Popular</option>
+                        <option value="Newest">Newest</option>
+                    </select>
+                </div>
+            </aside>
+
+            <div class="content-area">
+                <div class="search-bar-main">
+                    <input type="text" id="mainSearchInput" placeholder="Search for any API name, category, or keyword..." oninput="handleFilterChange()">
+                    <button class="btn btn-secondary">Search</button>
+                </div>
+
+                <div id="apiGrid" class="api-grid">
+                    <!-- APIs will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 thebijay API Hub. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Load Categories
+        const catList = document.getElementById('categoryFilter');
+        categories.forEach(cat => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="setCategory('${cat}')" class="${cat === 'All' ? 'active' : ''}">${cat}</a>`;
+            catList.appendChild(li);
+        });
+
+        // Load Status Filters
+        const statList = document.getElementById('statusFilter');
+        statusFilters.forEach(stat => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" onclick="setStatus('${stat}')" class="${stat === 'All' ? 'active' : ''}">${stat}</a>`;
+            statList.appendChild(li);
+        });
+
+        let currentCategory = 'All';
+        let currentStatus = 'All';
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('#categoryFilter a').forEach(a => a.classList.toggle('active', a.textContent === cat));
+            handleFilterChange();
+        }
+
+        function setStatus(stat) {
+            currentStatus = stat;
+            document.querySelectorAll('#statusFilter a').forEach(a => a.classList.toggle('active', a.textContent === stat));
+            handleFilterChange();
+        }
+
+        function handleFilterChange() {
+            const query = document.getElementById('mainSearchInput').value.toLowerCase();
+            const sortBy = document.getElementById('sortSelect').value;
+
+            let filtered = apiData.filter(api => {
+                const matchesCat = (currentCategory === 'All' || api.category === currentCategory);
+                const matchesStat = (currentStatus === 'All' || api.status === currentStatus);
+                const matchesSearch = (api.name.toLowerCase().includes(query) || api.short_description.toLowerCase().includes(query) || api.category.toLowerCase().includes(query));
+                return matchesCat && matchesStat && matchesSearch;
+            });
+
+            if (sortBy === 'Popular') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (sortBy === 'Newest') {
+                filtered.sort((a, b) => b.id - a.id);
+            }
+
+            renderApis(filtered);
+        }
+
+        function renderApis(list) {
+            const grid = document.getElementById('apiGrid');
+            grid.innerHTML = '';
+            list.forEach(api => {
+                const card = createAdvancedApiCard(api);
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get('q');
+        if (q) {
+            document.getElementById('mainSearchInput').value = q;
+        }
+
+        handleFilterChange();
+    </script>
+</body>
+</html>

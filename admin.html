@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | thebijay API Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-page">
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="index.html">thebijay API Hub</a></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="marketplace.html">APIs</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#" class="active">Admin Dashboard</a></li>
+                <li><a href="index.html">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="padding: 60px 0;">
+        <div class="marketplace-header">
+            <h1>Admin API Management</h1>
+            <p>Add, edit, and manage all APIs in the hub.</p>
+        </div>
+
+        <div class="section-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>API List</h2>
+                <button class="btn btn-primary" onclick="alert('Open Add API Modal')">
+                    <i class="fa fa-plus"></i> Add New API
+                </button>
+            </div>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>API Name</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Rating</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminApiTable"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="data.js"></script>
+    <script>
+        const adminTable = document.getElementById('adminApiTable');
+        apiData.forEach(api => {
+            adminTable.innerHTML += `
+                <tr>
+                    <td><b>${api.name}</b></td>
+                    <td>${api.category}</td>
+                    <td><span class="api-badge ${api.status === 'Free' ? 'badge-free' : 'badge-paid'}">${api.status}</span></td>
+                    <td><i class="fa fa-star" style="color: #f6ad55;"></i> ${api.rating}</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" onclick="alert('Edit ${api.name}')"><i class="fa fa-edit"></i> Edit</button>
+                        <button class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; color: #e53e3e; border-color: #e53e3e;" onclick="alert('Delete ${api.name}')"><i class="fa fa-trash"></i> Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    </script>
+</body>
+</html>
